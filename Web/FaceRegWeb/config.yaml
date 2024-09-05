@@ -1,0 +1,53 @@
+faceReg:
+    sim_threshold: 0.7
+
+# brightness of image B:  v1<= B <=v2 is high, v0<= B < v1 or v2 < B <= v3 is middle, B < v0 or B > v3 is low.
+# we just accept high brightness.
+brightness:
+    v0: 69.0
+    v1: 70.0
+    v2: 230.0
+    v3: 231.0
+
+# min resolution of face box, if w or h is smaller, abort this image. 
+resolution:
+    height: 112
+    width: 112
+
+# evaluate pose. 
+# Retrieve the angles yaw and pitch of the face, if the condition: abs(yaw) <= yaw_thrd and abs(pitch) <= pitch_thrd is satisfied, then return 'front face'(true); 
+# otherwise, raise an error: 
+    # elif yaw < -1.0 * yaw_thrd:
+    #     return "rightFace" 
+    # elif yaw > yaw_thrd:
+    #     return "leftFace"
+    # elif pitch > pitch_thrd:
+    #     return "upFace"
+    # elif pitch < -1.0 * pitch_thrd:
+    #     return "downFace"
+pose:
+    yaw_thrd: 30.0
+    pitch_thrd: 25.0
+    var_onnx_path: ./checkpoints/fsanet-var.onnx
+    conv_onnx_path: ./checkpoints/fsanet-conv.onnx
+
+# evaluate Clarity of image.
+    # if clarity < self.low_thresh:
+    #     level = "LOW"
+    # elif self.low_thresh <= clarity < self.high_thresh:
+    #     level = "MEDIUM"
+    # else:
+    #     level = "HIGH"
+    # return level != 'LOW' 
+clarity:
+    low_thrd: 0.10
+    high_thrd: 0.20
+
+ck_paths:
+    landmk1: ./checkpoints/face_landmarker_pts5_net1.onnx
+    landmk2: ./checkpoints/face_landmarker_pts5_net2.onnx
+    num_threads: 4
+    FcReg: ./checkpoints/face_recognizer.onnx
+    FcBx: ./checkpoints/faceboxesv2-640x640.onnx
+    rotifer: ./checkpoints/model_gray_mobilenetv2_rotcls.onnx
+
